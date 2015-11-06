@@ -1,0 +1,21 @@
+{
+    "name": "vlsirko/yii2-application-builder",
+    "description": "This ext allows you to create all modules and databases tables via json file",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"],
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Sirenko Vlad",
+            "email": "Vlsirko89@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "AppBuilder\\": ""
+        }
+    }
+}
