@@ -8,7 +8,7 @@ use yii\base\Module as BaseModule;
 /**
  * @author Sirenko Vlad
  */
-class AppBuilder extends BaseModule implements BootstrapInterface
+class Module extends BaseModule implements BootstrapInterface
 {
     public $controllerNamespace = 'AppBuilder';
  

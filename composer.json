@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "AppBuilder\\": ""
+            "AppBuilder\\": ["lib/"]
         }
     }
 }
