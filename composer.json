@@ -1,5 +1,6 @@
 {
     "name": "vlsirko/yii2-application-builder",
+	"version": "1.0.0",
     "description": "This ext allows you to create all modules and databases tables via json file",
     "type": "yii2-extension",
     "keywords": ["yii2","extension"],
