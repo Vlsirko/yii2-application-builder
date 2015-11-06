@@ -21,7 +21,7 @@ class AppBuilder extends BaseModule implements BootstrapInterface
     {
         if ($app instanceof \yii\console\Application) {
             $app->controllerMap[$this->id] = [
-                'class' => 'AppBuilderController',
+                'class' => 'AppBuilder\AppBuilderController',
                 'module' => $this,
             ];
         }
