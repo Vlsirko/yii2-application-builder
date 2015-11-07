@@ -31,7 +31,7 @@ class AppBuilder {
 		$this->tableGenerator = $tableGenerator;
 		$this->modelGenerator = $modelGenerator;
 		$this->crudGenerator = $crudGenerator;
-		$this->modulGenerator = $moduleGenerator;
+		$this->moduleGenerator = $moduleGenerator;
 	}
 	public function setConfiguration($configurationArray){
 		$this->params = $configurationArray;
