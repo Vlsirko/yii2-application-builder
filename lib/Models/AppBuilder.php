@@ -1,44 +1,67 @@
 <?php
 
 namespace AppBuilder\Models;
+
 use AppBuilder\Models\TableGenerator;
-use yii\gii\generators\model\Generator as ModelGenerator;
-use yii\gii\generators\crud\Generator as CrudGenerator;
-use yii\gii\generators\module\Generator as ModuleGenerator;
+use yii\gii\Generator as GiiGenerator;
+use yii\base\Object;
 
 /**
  * Responsible for creating modules
  * @author Sirenko Vlad
  */
-class AppBuilder {
-	
+class AppBuilder extends Object {
+
 	private $params;
-	
-	private $tableGenerator;
-	
-	private $moduleGenerator;
-	
-	private $crudGenerator;
-	
-	private $modelGenerator;
-	
-	
-	public function __construct(TableGenerator $tableGenerator, 
-								ModelGenerator $modelGenerator,
-								CrudGenerator $crudGenerator,
-								ModuleGenerator $moduleGenerator)
+	private $_tableGenerator;
+	private $_moduleGenerator;
+	private $_crudGenerator;
+	private $_modelGenerator;
+
+	public function setConfiguration($configurationArray)
 	{
-		$this->tableGenerator = $tableGenerator;
-		$this->modelGenerator = $modelGenerator;
-		$this->crudGenerator = $crudGenerator;
-		$this->moduleGenerator = $moduleGenerator;
-	}
-	public function setConfiguration($configurationArray){
 		$this->params = $configurationArray;
 		return $this;
 	}
-	
-	public function run(){
+
+	public function setTableGenerator(TableGenerator $tableGenerator)
+	{
+		$this->_tableGenerator = $tableGenerator;
+	}
+
+	public function getTableGenerator()
+	{
+		return $this->_tableGenerator;
+	}
+
+	public function setCrudGenerator(GiiGenerator $generator)
+	{
+		$this->_crudGenerator = $generator;
+	}
+
+	public function setModuleGenerator(GiiGenerator $generator)
+	{
+		$this->_moduleGenerator = $generator;
+	}
+
+	public function setModelGenerator(GiiGenerator $generator)
+	{
+		$this->_modelGenerator = $generator;
+	}
+
+	public function run()
+	{
 		print_r($this);
 	}
+
+	public static function getDependencies()
+	{
+		return [
+			"tableGenerator" => \Yii::$container->get('TableGenerator'),
+			"moduleGenerator" => \Yii::$container->get('ModuleGenerator'),
+			"modelGenerator" => \Yii::$container->get('ModelGenerator'),
+			"crudGenerator" => \Yii::$container->get('CrudGenerator')
+		];
+	}
+
 }
