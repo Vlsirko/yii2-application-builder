@@ -1,8 +1,8 @@
 {
 	"AppBuilder\\Models\\AppBuilder": {
-		"TableGenerator" : "yours class",
-		"ModuleGenerator" : "yours class",
-		"CrudGenerator" : "yours class",
-		"ModelGenerator" : "yours class"
+		"tableGenerator" : "yours class",
+		"moduleGenerator" : "yours class",
+		"crudGenerator" : "yours class",
+		"modelGenerator" : "yours class"
 	}
 }

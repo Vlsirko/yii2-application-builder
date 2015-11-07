@@ -1,9 +1,7 @@
 <?php
 return [
-	"AppBuilder\Models\AppBuilder" => [
-		"TableGenerator" => "AppBuilder\Models\TableGenerator",
-		"ModelGenerator" => "yii\gii\generators\model\Generator",
-		"CrudGenerator" => "yii\gii\generators\crud\Generator",
-		"ModuleGenerator" => "yii\gii\generators\model\Generator"
-	]
+	"AppBuilder\Interfaces\TableGeneratorInterface" => "AppBuilder\Models\TableGenerator",
+	"yii\gii\generators\model\Generator" => "yii\gii\generators\model\Generator",
+	"yii\gii\generators\crud\Generator" => "yii\gii\generators\crud\Generator",
+	"yii\gii\generators\model\Generator" => "yii\gii\generators\model\Generator"
 ];

@@ -2,6 +2,9 @@
 
 namespace AppBuilder\Models;
 use AppBuilder\Models\TableGenerator;
+use yii\gii\generators\model\Generator as ModelGenerator;
+use yii\gii\generators\crud\Generator as CrudGenerator;
+use yii\gii\generators\module\Generator as ModuleGenerator;
 
 /**
  * Responsible for creating modules
@@ -11,23 +14,31 @@ class AppBuilder {
 	
 	private $params;
 	
-	private $tableGeneratorInstance;
+	private $tableGenerator;
 	
-	private $moduleGeneratorInstance;
+	private $moduleGenerator;
 	
-	private $crudGeneratorInstance;
+	private $crudGenerator;
 	
-	//private $moduleGeneratorInstance;
+	private $modelGenerator;
 	
+	
+	public function __construct(TableGenerator $tableGenerator, 
+								ModelGenerator $modelGenerator,
+								CrudGenerator $crudGenerator,
+								ModuleGenerator $moduleGenerator)
+	{
+		$this->tableGenerator = $tableGenerator;
+		$this->modelGenerator = $modelGenerator;
+		$this->crudGenerator = $crudGenerator;
+		$this->modulGenerator = $moduleGenerator;
+	}
 	public function setConfiguration($configurationArray){
 		$this->params = $configurationArray;
+		return $this;
 	}
 	
-	public function setTableGenerator(TableGenerator $tableGenerator){
-		$this->tableGeneratorInstance = $tableGenerator;
-	}
-	
-	public function setCrudGenerator(TableGenerator $crudGenerator){
-		$this->crudGeneratorInstance = $crudGenerator;
+	public function run(){
+		print_r($this);
 	}
 }

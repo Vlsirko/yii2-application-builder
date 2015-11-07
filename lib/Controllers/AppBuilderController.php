@@ -18,9 +18,9 @@ class AppBuilderController extends Controller{
 		try{
 			Messager::getInstance()->confirm('Are you sure you want to do this? Type "yes" to continue', Messager::WARNING);
 			$modulesConfiguration = ConfigLoader::getInstance()->getModuleConfiguration();
-			$appBuilder  = \Yii::$container->get('AppBuilder\Models\AppBuilder');
-			$appBuilder->setConfiguration($modulesConfiguration);
-			$appBuilder->run();
+			\Yii::$container->get('AppBuilder\Models\AppBuilder')
+				->setConfiguration($modulesConfiguration)
+					->run();
 		}
 		catch(\Exception $e){
 			Messager::getInstance()->showMessage($e->getMessage(), Messager::FAILURE);
