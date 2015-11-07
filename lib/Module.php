@@ -20,7 +20,8 @@ class Module extends BaseModule implements BootstrapInterface
  
     public function bootstrap($app)
     {
-		$this->registerDependencies();
+		\Yii::setAlias("@appBuilder", __DIR__ . '/..');
+		
         if ($app instanceof \yii\console\Application) {
             $app->controllerMap[$this->id] = [
                 'class' => 'AppBuilder\Controllers\AppBuilderController',
@@ -28,8 +29,5 @@ class Module extends BaseModule implements BootstrapInterface
             ];
         }
     }
-	
-	public function registerDependencies(){
-		GlobalGenerator::registerDependencies();
-	}
+
 }

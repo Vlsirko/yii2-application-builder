@@ -12,13 +12,17 @@ use yii\helpers\Json;
 class ConfigLoader {
 
 	private static $instance = null;
-	private $pathToConfig = null;
+	private $pathToModuleConfig = null;
 	private $config = null;
 	private $configLoaded = false;
+	private $pathToDependencieUserFile = null;
+	private $mainDependenciesConfig = null;
 
 	private function __construct()
 	{
-		$this->pathToConfig = \Yii::getAlias('@app') . '/config/app_structure.json';
+		$this->pathToModuleConfig = \Yii::getAlias('@app') . '/config/app_structure.json';
+		$this->pathToDependencieUserFile = \Yii::getAlias('@app') . '/config/app_dependencies.json';
+		$this->registerDependencies();
 	}
 
 	public static function getInstance()
@@ -31,7 +35,7 @@ class ConfigLoader {
 
 	private function setPathToConfig($path)
 	{
-		$this->pathToConfig = $path;
+		$this->pathToModuleConfig = $path;
 	}
 
 	public function getModuleConfiguration()
@@ -39,24 +43,24 @@ class ConfigLoader {
 		if (!$this->configLoaded) {
 			$this->loadConfig();
 		}
-		return $this->config['modules'];
+		return $this->config;
 	}
 
 	private function loadConfig()
 	{
-		if (!$this->configExists()) {
+		if (!$this->configFileExists()) {
 			throw new \Exception("Config file is missed!");
 		}
-		$json = file_get_contents($this->pathToConfig);
+		$json = file_get_contents($this->pathToModuleConfig);
 
 
 		$this->config = $this->configValidation(Json::decode($json, true));
 		$this->configLoaded = true;
 	}
 
-	private function configExists()
+	private function configFileExists()
 	{
-		return file_exists($this->pathToConfig);
+		return file_exists($this->pathToModuleConfig);
 	}
 
 	private function configValidation($configArray)
@@ -66,11 +70,48 @@ class ConfigLoader {
 		 */
 		return $configArray;
 	}
-	
-	public function getGeneratorsConfig(){
-		if (!$this->configLoaded) {
-			$this->loadConfig();
+
+	private function getDependenciesConfiguration()
+	{
+		$config = $this->getMainDependenciesConfig();
+
+		if ($this->userDependenciesFileExists()) {
+			$userFileConfig = $this->getUserDependenciesConfig();
+			$config = array_replace_recursive($config, $userFileConfig);
 		}
-		return $this->config['generators'];
+
+		return $config;
 	}
+
+	private function getMainDependenciesConfig()
+	{
+		if (is_null($this->mainDependenciesConfig)) {
+			$this->mainDependenciesConfig = require \yii::getAlias("@appBuilder") . "/config/Dependencies.php";
+		}
+		return $this->mainDependenciesConfig;
+	}
+
+	private function getUserDependenciesConfig()
+	{
+		$config = [];
+		if ($this->userDependenciesFileExists()) {
+			$userConfig = file_get_contents($this->pathToDependencieUserFile);
+			$config = \yii\helpers\Json::decode($userConfig);
+		}
+		return $config;
+	}
+
+	private function userDependenciesFileExists()
+	{
+		return file_exists($this->pathToDependencieUserFile);
+	}
+
+	public function registerDependencies()
+	{
+		$dependencies = $this->getDependenciesConfiguration();
+		foreach ($dependencies as $className => $refs) {
+			\Yii::$container->set($className, $refs);
+		}
+	}
+
 }
