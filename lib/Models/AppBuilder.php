@@ -2,8 +2,7 @@
 
 namespace AppBuilder\Models;
 
-use AppBuilder\Models\TableGenerator;
-use yii\gii\Generator as GiiGenerator;
+use AppBuilder\Factories\Generators\AbstractFactory as GeneratorFactory;
 use yii\base\Object;
 
 /**
@@ -12,56 +11,44 @@ use yii\base\Object;
  */
 class AppBuilder extends Object {
 
-	private $params;
-	private $_tableGenerator;
-	private $_moduleGenerator;
-	private $_crudGenerator;
-	private $_modelGenerator;
-
-	public function setConfiguration($configurationArray)
-	{
-		$this->params = $configurationArray;
-		return $this;
-	}
-
-	public function setTableGenerator(TableGenerator $tableGenerator)
-	{
-		$this->_tableGenerator = $tableGenerator;
-	}
-
-	public function getTableGenerator()
-	{
-		return $this->_tableGenerator;
-	}
-
-	public function setCrudGenerator(GiiGenerator $generator)
-	{
-		$this->_crudGenerator = $generator;
-	}
-
-	public function setModuleGenerator(GiiGenerator $generator)
-	{
-		$this->_moduleGenerator = $generator;
-	}
-
-	public function setModelGenerator(GiiGenerator $generator)
-	{
-		$this->_modelGenerator = $generator;
-	}
+	private $modulesConfiguration;
 
 	public function run()
 	{
-		print_r($this);
+		$this->modulesConfiguration = ConfigLoader::getInstance()->getModuleConfiguration();
+		$this->creatingTables()->creatingInstances();
 	}
 
-	public static function getDependencies()
+	protected function creatingTables()
 	{
-		return [
-			"tableGenerator" => \Yii::$container->get('TableGenerator'),
-			"moduleGenerator" => \Yii::$container->get('ModuleGenerator'),
-			"modelGenerator" => \Yii::$container->get('ModelGenerator'),
-			"crudGenerator" => \Yii::$container->get('CrudGenerator')
-		];
+		GeneratorFactory::getGeneratorsFactory(GeneratorFactory::TABLE_GENERATOR_FACTORY)
+			->getGenerator($this->modulesConfiguration)
+			->generate();
+		return $this;
+	}
+
+	protected function creatingInstances()
+	{
+		foreach ($this->modulesConfiguration as $module) {
+			$toGenerate = ConfigLoader::getInstance()->getEntitiesToGenerate($module);
+			foreach ($toGenerate as $entity) {
+				$this->generate($entity, $module);
+			}
+		}
+		return $this;
+	}
+
+	protected function generate($type, $modelParamsArray)
+	{
+		$generator = GeneratorFactory::getGeneratorsFactory($type)->getGenerator($modelParamsArray[$type]);
+		$this->saveFiles($generator->generate());
+		$generator->trigger('AFTER_CREATE');
+	}
+	
+	protected function saveFiles($files){
+		foreach($files as $file){
+			$file->save();
+		}
 	}
 
 }

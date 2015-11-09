@@ -12,6 +12,10 @@ use yii\base\Module as BaseModule;
 class Module extends BaseModule implements BootstrapInterface
 {
     public $controllerNamespace = 'AppBuilder';
+	
+	public $newDirMode = 0777;
+	
+	public $newFileMode = 0666;
  
     public function init()
     {

@@ -1,0 +1,47 @@
+<?php
+
+namespace AppBuilder\Factories\Generators;
+use yii\gii\Generator as AbstractGiiGenerator;
+/**
+ * Description of GeneratorsAbstractFactory
+ *
+ * @author vlad
+ */
+abstract class AbstractFactory {
+
+	const TABLE_GENERATOR_FACTORY = 'table';
+	const MODEL_GENERATOR_FACTORY = 'model';
+	const CRUD_GENERATOR_FACTORY = 'crud';
+	const MODULE_GENERATOR_FACTORY = 'module';
+
+	public static function getGeneratorsFactory($factoryName)
+	{
+		switch ($factoryName) {
+			case self::TABLE_GENERATOR_FACTORY:
+				return new TableGeneratorFactory();
+				
+			case self::MODEL_GENERATOR_FACTORY:
+				return new ModelGeneratorFactory();
+				
+			case self::CRUD_GENERATOR_FACTORY:
+				return new CrudGeneratorFactory();
+				
+			case self::MODULE_GENERATOR_FACTORY:
+				return new ModuleGeneratorFactory();
+		}
+		
+		 throw new Exception('Bad factory value');
+	}
+	
+	abstract function getGenerator($params);
+	
+	protected function getFilledGennerator(AbstractGiiGenerator $generator, $fields)
+	{
+		foreach ($fields as $fieldName => $fieldValue) {
+			if (property_exists($generator, $fieldName)) {
+				$generator->{$fieldName} = $fieldValue;
+			}
+		}
+		return $generator;
+	}
+}

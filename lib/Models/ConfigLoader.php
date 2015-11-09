@@ -3,6 +3,7 @@
 namespace AppBuilder\Models;
 
 use yii\helpers\Json;
+use AppBuilder\Factories\Generators\AbstractFactory;
 
 /**
  * Description of configLoader
@@ -112,6 +113,17 @@ class ConfigLoader {
 		foreach ($dependencies as $className => $refs) {
 			\Yii::$container->set($className, $refs);
 		}
+	}
+	
+	public function getEntitiesToGenerate($module){
+		
+		$allowedEntities = [
+			AbstractFactory::MODEL_GENERATOR_FACTORY, 
+			AbstractFactory::CRUD_GENERATOR_FACTORY, 
+			AbstractFactory::MODULE_GENERATOR_FACTORY
+		];
+		
+		return array_intersect($allowedEntities, array_keys($module));
 	}
 
 }
