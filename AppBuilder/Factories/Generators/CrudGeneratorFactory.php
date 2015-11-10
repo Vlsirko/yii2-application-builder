@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBuilder\Factories\Generators;
+use AppBuilder\Models\Generators\CrudDestroyer;
 
 /**
  * Description of CrudGeneratorFactory
@@ -19,6 +20,11 @@ class CrudGeneratorFactory extends AbstractFactory {
 			"viewPath" => isset($params['view_path']) ? $params['view_path'] : '',
 		];
 		return $this->getFilledGennerator($generator, $fillFields);
+	}
+	
+	public function getDestroyer($modulesConfigurationArray)
+	{
+		return new CrudDestroyer($modulesConfigurationArray);
 	}
 
 }

@@ -18,7 +18,7 @@ class SqlTableNotExists extends ExceptionStrategy{
 
 	public function process()
 	{
-		Messager::getInstance()->showMessage('Index not exists', Messager::NOTE);
+		Messager::getInstance()->showMessage('Table not exists', Messager::NOTE);
 	}
 
 }

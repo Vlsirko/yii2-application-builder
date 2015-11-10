@@ -33,6 +33,8 @@ abstract class AbstractFactory {
 	
 	abstract function getGenerator($modulesConfigurationArray);
 	
+	abstract function getDestroyer($modulesConfigurationArray);
+	
 	protected function getFilledGennerator(AbstractGiiGenerator $generator, $fields)
 	{
 		foreach ($fields as $fieldName => $fieldValue) {

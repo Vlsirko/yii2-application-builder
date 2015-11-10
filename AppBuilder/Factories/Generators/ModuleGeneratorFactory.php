@@ -3,6 +3,7 @@
 namespace AppBuilder\Factories\Generators;
 
 use AppBuilder\Models\Messager;
+use AppBuilder\Models\Generators\ModuleDestroyer;
 
 /**
  * Description of moduleGeneratorFactory
@@ -24,6 +25,11 @@ class ModuleGeneratorFactory extends AbstractFactory {
 		$generator->on("AFTER_CREATE", [$this, 'afterModuleCreateCallback'], $fillFields['moduleClass']);
 
 		return $generator;
+	}
+	
+	public function getDestroyer($modulesConfigurationArray)
+	{
+		return new ModuleDestroyer($modulesConfigurationArray);
 	}
 
 	public function afterModuleCreateCallback($event)

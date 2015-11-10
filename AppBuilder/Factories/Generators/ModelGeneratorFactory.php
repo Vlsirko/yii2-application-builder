@@ -2,6 +2,7 @@
 
 namespace AppBuilder\Factories\Generators;
 use AppBuilder\Models\Messager;
+use AppBuilder\Models\Generators\ModelDestroyer;
 /**
  * Description of ModelGeneratorFactory
  *
@@ -24,5 +25,10 @@ class ModelGeneratorFactory extends AbstractFactory{
 		
 		Messager::getInstance()->showMessage("Generating model for {$params['table_name']}");
 		return $this->getFilledGennerator($generator, $fillFields);
+	}
+	
+	public function getDestroyer($modulesConfigurationArray)
+	{
+		return new ModelDestroyer($modulesConfigurationArray);
 	}
 }
