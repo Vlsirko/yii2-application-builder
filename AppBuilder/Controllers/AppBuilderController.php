@@ -4,7 +4,7 @@ namespace AppBuilder\Controllers;
 
 use yii\console\Controller;
 use AppBuilder\Models\Messager;
-use AppBuilder\Models\AppBuilder;
+use AppBuilder\Factories\AppBuilderFactory;
 
 /**
  * Description of AppBuilderController
@@ -13,11 +13,11 @@ use AppBuilder\Models\AppBuilder;
  */
 class AppBuilderController extends Controller {
 
-	public function actionGenerate()
+	public function actionIndex($command)
 	{
-		//try {
+		///try {
+			$appBuilder = AppBuilderFactory::getAppBuilderByCommand($command);
 			Messager::getInstance()->confirm('Are you sure you want to do this? Type "yes" to continue', Messager::WARNING);
-			$appBuilder = new AppBuilder();
 			$appBuilder->run();
 		/*} catch (\Exception $e) {
 			Messager::getInstance()->showMessage($e->getMessage(), Messager::FAILURE);

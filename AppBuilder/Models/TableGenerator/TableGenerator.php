@@ -1,58 +1,55 @@
 <?php
 
-namespace AppBuilder\Models;
+namespace AppBuilder\Models\TableGenerator;
 
-use yii\gii\generators\model\Generator;
 use AppBuilder\Factories\ExceptionHandlers\ExceptionHandlerFactory;
+use AppBuilder\Models\Messager;
+use AppBuilder\Factories\TableGeneratorStrategyFactory;
 
 /**
  * Create table from configuration file
  * @author Sirenko Vlad
  */
-class TableGenerator extends Generator {
+class TableGenerator {
 
 	protected $tablesCommandStorage = [];
 	protected $relationCommandStorage = [];
 	protected $configuration;
 	protected $connection;
+	protected $commandStrategy;
 
-	public function __construct()
+	public function __construct(TableGeneratorStrategyFactory $strategy)
 	{
-		$this->connection = \Yii::$app->db;
+		$this->commandStrategy = $strategy;
 	}
-
-	public function getName()
-	{
-		return "TableGenerator";
-	}
-
+	
 	public function parseConfiguration($configuration)
 	{
 		$this->configuration = $configuration;
 		foreach ($this->configuration as $module) {
-			$options = isset($module['table']['options']) ? $module['table']['options'] : null;
-			$this->registerTable($module['table']['table_name'], $module['table']['schema'], $options);
-
-			if (isset($module['table']['relations'])) {
-				$this->registerTableRelations($module['table']['table_name'], $module['table']['relations']);
-			}
+			$this->registerTable($module['table']);
+			$this->registerTableRelations($module['table']);
 		}
 	}
-
-	protected function registerTable($name, $schema, $options = null)
+	
+	protected function registerTable($tableConfiguration)
 	{
-		$this->tablesCommandStorage[$name] = $this->connection->createCommand()->createTable($name, $schema, $options);
+		$this->tablesCommandStorage[$tableConfiguration['table_name']] = $this->commandStrategy->getRegisterTableCommand($tableConfiguration);
 	}
-
-	protected function registerTableRelations($name, $relationsArray)
+	
+	protected function registerTableRelations($tableConfiguration)
 	{
-		foreach ($relationsArray as $relationName => $relation) {
-			$this->relationCommandStorage[$relationName] = $this->connection->createCommand()->addForeignKey(
-				$relationName, $name, $relation['column'], $relation['ref_table'], $relation['ref_column'], isset($relation['delete']) ? $relation['delete'] : null, isset($relation['update']) ? $relation['update'] : null
-			);
+		if(!isset($tableConfiguration['relations'])){
+			return false;
 		}
+		
+		$tableName = $tableConfiguration['table_name'];
+		$relations = $tableConfiguration['relations'];
+		$command = $this->commandStrategy->getRegisterRelationsCommand($tableName, $relations);
+		$this->relationCommandStorage[$tableName] = $command;
 	}
-
+	
+	
 	public function generate()
 	{
 		$transaction = $this->connection->beginTransaction();
@@ -64,7 +61,7 @@ class TableGenerator extends Generator {
 			throw new \Exception($e->getMessage());
 		}
 	}
-
+	
 	protected function runTablesCommands()
 	{
 		foreach ($this->tablesCommandStorage as $moduleName => $command) {
@@ -76,7 +73,7 @@ class TableGenerator extends Generator {
 			}
 		}
 	}
-
+	
 	protected function runRelationsCommands()
 	{
 		foreach ($this->relationCommandStorage as $moduleName => $command) {
@@ -89,10 +86,14 @@ class TableGenerator extends Generator {
 		}
 	}
 	
-	protected function handleSqlException(){
-		
-	}
+	
 
+	public function getName()
+	{
+		return "TableGenerator";
+	}
+	
+	
 	protected function validateSchema($schema)
 	{
 		/**
@@ -101,6 +102,4 @@ class TableGenerator extends Generator {
 		return $schema;
 	}
 	
-	
-
 }

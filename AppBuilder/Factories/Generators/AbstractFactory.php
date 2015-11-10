@@ -9,7 +9,6 @@ use yii\gii\Generator as AbstractGiiGenerator;
  */
 abstract class AbstractFactory {
 
-	const TABLE_GENERATOR_FACTORY = 'table';
 	const MODEL_GENERATOR_FACTORY = 'model';
 	const CRUD_GENERATOR_FACTORY = 'crud';
 	const MODULE_GENERATOR_FACTORY = 'module';
@@ -17,9 +16,7 @@ abstract class AbstractFactory {
 	public static function getGeneratorsFactory($factoryName)
 	{
 		switch ($factoryName) {
-			case self::TABLE_GENERATOR_FACTORY:
-				return new TableGeneratorFactory();
-				
+		
 			case self::MODEL_GENERATOR_FACTORY:
 				return new ModelGeneratorFactory();
 				
@@ -33,7 +30,8 @@ abstract class AbstractFactory {
 		 throw new Exception('Bad factory value');
 	}
 	
-	abstract function getGenerator($params);
+	
+	abstract function getGenerator($modulesConfigurationArray);
 	
 	protected function getFilledGennerator(AbstractGiiGenerator $generator, $fields)
 	{
