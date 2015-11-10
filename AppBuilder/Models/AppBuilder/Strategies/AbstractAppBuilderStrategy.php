@@ -2,6 +2,7 @@
 namespace AppBuilder\Models\AppBuilder\Strategies;
 
 use AppBuilder\Models\ConfigLoader;
+use AppBuilder\Models\AppBuilder\AppBuilder;
 /**
  *
  * @author Sirenko Vlad
@@ -15,7 +16,9 @@ abstract class  AbstractAppBuilderStrategy {
 		$this->modulesConfiguration = ConfigLoader::getInstance()->getModuleConfiguration();
 	}
 	
-	abstract public function processingTables();
+	//abstract public function processingTables();
 	
-	abstract public function processingModules();
+	//abstract public function processingModules();
+	
+	abstract public function process();
 }

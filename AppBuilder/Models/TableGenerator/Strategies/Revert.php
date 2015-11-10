@@ -1,11 +1,4 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace AppBuilder\Models\TableGenerator\Strategies;
 
 /**
@@ -31,5 +24,15 @@ class Revert implements TableGeneratorStrategyInterface{
 		}
 		
 		return $returnArray;
+	}
+	
+	public function execCommands(\AppBuilder\Models\TableGenerator\TableGenerator $generator)
+	{
+		$generator->runRelationsCommands();
+		$generator->runTablesCommands();
+	}
+	
+	public function getName(){
+		return 'Revert';
 	}
 }

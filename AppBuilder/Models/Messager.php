@@ -42,8 +42,11 @@ class Messager {
 		}
 	}
 	
-	public function showMessage($message, $status = null){
+	public function showMessage($message, $status = null, $break = true){
 		echo $this->colorize($message, $status);
+		if($break){
+			echo PHP_EOL;
+		}
 		return $this;
 	}
 	
@@ -68,7 +71,7 @@ class Messager {
 			
 		}
 			
-		return "\033[" . $out . $text . "\033[0m\n";
+		return "\033[" . $out . $text . "\033[0m";
 	}
 
 }

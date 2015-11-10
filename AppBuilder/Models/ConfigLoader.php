@@ -110,7 +110,7 @@ class ConfigLoader {
 		}
 	}
 	
-	public function getEntitiesToGenerate($module){
+	public function getAvaliableEntitiesFromConfig($module){
 		
 		$allowedEntities = [
 			AbstractFactory::MODEL_GENERATOR_FACTORY, 

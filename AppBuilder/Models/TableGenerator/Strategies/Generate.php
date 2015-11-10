@@ -1,7 +1,7 @@
 <?php
 
 namespace AppBuilder\Models\TableGenerator\Strategies;
-
+use \AppBuilder\Models\TableGenerator\TableGenerator;
 /**
  * Description of Generate
  *
@@ -29,5 +29,14 @@ class Generate implements TableGeneratorStrategyInterface {
 		
 		return $returnArray;
 	}
-
+	
+	public function execCommands(\AppBuilder\Models\TableGenerator\TableGenerator $generator)
+	{
+		$generator->runTablesCommands();
+		$generator->runRelationsCommands();
+	}
+	
+	public function getName(){
+		return 'Generate';
+	}
 }

@@ -11,10 +11,10 @@ use AppBuilder\Models\Messager;
  * @author Sirenko Vlad
  */
 class SqlTableExists extends ExceptionStrategy {
-
+	
 	public function process()
 	{
-		Messager::getInstance()->showMessage('Table exists', Messager::SUCCSESS);
+		Messager::getInstance()->showMessage('Table exists', Messager::NOTE);
 	}
 
 }

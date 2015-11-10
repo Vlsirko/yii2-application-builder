@@ -14,13 +14,16 @@ use AppBuilder\Models\ExceptionHandler\Strategies;
  */
 class ExceptionHandlerFactory {
 
-	const SQL_TABLE_EXISTS = 42;
-	const SQL_SYNTAX_ERROR = 42000;
-	const SQL_INDEX_EXISTS = 23000;
+	const SQL_TABLE_EXISTS = 1050;
+	const SQL_TABLE_NOT_EXISTS = 1051;
+	const SQL_SYNTAX_ERROR = 1064;
+	const SQL_INDEX_EXISTS = 1022;
+	const SQL_INDEX_NOT_EXISTS = 1146;
 
 	public static function getHandlerViaException(\Exception $e)
 	{
-		$strategy = self::getHandlerStrategyViaExceptionCode($e->getCode());
+		$info = $e->errorInfo;
+		$strategy = self::getHandlerStrategyViaExceptionCode($info[1]);
 		$strategy->setException($e);
 		return new ExceptionHandler($strategy);
 	}
@@ -34,6 +37,10 @@ class ExceptionHandlerFactory {
 				return new Strategies\SqlSyntaxError();
 			case self::SQL_INDEX_EXISTS:
 				return new Strategies\SqlIndexExists();
+			case self::SQL_TABLE_NOT_EXISTS:
+				return new Strategies\SqlTableNotExists();
+			case self::SQL_INDEX_NOT_EXISTS:
+				return new Strategies\SqlIndexNotExists();
 		}
 
 		throw new \Exception("Undefined exception code in ExceptionHandlerFactory {$code}");

@@ -10,12 +10,18 @@ use AppBuilder\Factories\TableGeneratorFactory;
 use AppBuilder\Factories\TableGeneratorStrategyFactory;
 
 /**
- * Description of Generate
+ * This strategy response for creating modules and tables. 
+ * Incapsulated in AppBuilder instance
  *
  * @author Sirenko Vlad
  */
 class Generate extends AbstractAppBuilderStrategy {
-
+	
+	
+	public function process(){
+		$this->processingTables()->processingModules();
+	}
+	
 	public function processingTables()
 	{
 		TableGeneratorFactory::getGenerator($this->modulesConfiguration, TableGeneratorStrategyFactory::COMMAND_GENERATE)
@@ -26,7 +32,7 @@ class Generate extends AbstractAppBuilderStrategy {
 	public function processingModules()
 	{
 		foreach ($this->modulesConfiguration as $module) {
-			$toGenerate = ConfigLoader::getInstance()->getEntitiesToGenerate($module);
+			$toGenerate = ConfigLoader::getInstance()->getAvaliableEntitiesFromConfig($module);
 			foreach ($toGenerate as $entity) {
 				$this->generate($entity, $module);
 			}

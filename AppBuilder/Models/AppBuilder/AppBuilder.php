@@ -19,7 +19,7 @@ class AppBuilder {
 
 	public function run()
 	{
-		$this->strategy->processingTables()->processingModules();
+		$this->strategy->process($this);
 	}
 
 }

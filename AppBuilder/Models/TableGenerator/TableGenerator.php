@@ -55,19 +55,19 @@ class TableGenerator {
 	{
 		$transaction = $this->connection->beginTransaction();
 		try {
-			$this->runTablesCommands();
-			$this->runRelationsCommands();
+			$this->commandStrategy->execCommands($this);
 		} catch (\yii\db\Exception $e) {
 			$transaction->rollBack();
 			throw new \Exception($e->getMessage());
 		}
 	}
 	
-	protected function runTablesCommands()
+	public function runTablesCommands()
 	{
 		foreach ($this->tablesCommandStorage as $moduleName => $command) {
 			try {
-				Messager::getInstance()->showMessage('Generating "' . $moduleName . "' table");
+				$processName = $this->commandStrategy->getName();
+				Messager::getInstance()->showMessage($processName  . ' "' . $moduleName . "' table");
 				$command->execute();
 			} catch (\Exception $e) {
 				ExceptionHandlerFactory::getHandlerViaException($e)->handle();
@@ -75,11 +75,12 @@ class TableGenerator {
 		}
 	}
 	
-	protected function runRelationsCommands()
+	public function runRelationsCommands()
 	{
 		foreach ($this->relationCommandStorage as $moduleName => $command) {
 			try {
-				Messager::getInstance()->showMessage('Generating relation "' . $moduleName . "'");
+				$processName = $this->commandStrategy->getName();
+				Messager::getInstance()->showMessage($processName . ' relation "' . $moduleName . "'");
 				$command->execute();
 			} catch (\Exception $e) {
 				ExceptionHandlerFactory::getHandlerViaException($e)->handle();
