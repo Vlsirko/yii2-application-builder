@@ -1,0 +1,60 @@
+[
+	{
+		"table": {
+			"table_name" : "product_module",
+			
+			"schema": {
+				"id": "pk",
+				"name": "VARCHAR(255) NOT NULL COMMENT 'Название|text'",
+				"category_id": "INT(11) NULL COMMENT 'Категория|select'"
+			},
+			"options": "CHARSET utf8",
+			"relations": {
+				"fk_product_category": {
+					"column": "category_id",
+					"ref_table": "product_category_module",
+					"ref_column": "id"
+				}
+			}
+		},
+		"module": {
+			"module_title": "Товары",
+			"module_class": "backend\\modules\\Product\\ProductModule"
+		},
+		"model": {
+			"model_class": "Product",
+			"model_namespace": "common\\models",
+			"model_base_class": "yii\\db\\ActiveRecord",
+			"table_name" : "product_module"
+		},
+		"crud": {
+			"model_class": "common\\models\\Product",
+			"controller_class": "backend\\controllers\\ProductController",
+			"view_path": "backend\\views\\product"
+		}
+	},
+	
+	{
+		"table": {
+			"table_name" : "product_category_module",
+			
+			"schema": {
+				"id": "pk",
+				"name": "VARCHAR(255) NOT NULL COMMENT 'Название|text'"
+			},
+			"options": "CHARSET utf8"
+		},
+		
+		"model": {
+			"model_class": "ProductCategory",
+			"model_namespace": "common\\models",
+			"model_base_class": "yii\\db\\ActiveRecord",
+			"table_name" : "product_category_module"
+		},
+		"crud": {
+			"model_class": "common\\models\\ProductCategory",
+			"controller_class": "backend\\controllers\\CategoryController",
+			"view_path": "backend\\views\\category"
+		}
+	}
+]

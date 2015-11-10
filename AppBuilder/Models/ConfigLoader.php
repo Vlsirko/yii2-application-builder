@@ -34,11 +34,6 @@ class ConfigLoader {
 		return self::$instance;
 	}
 
-	private function setPathToConfig($path)
-	{
-		$this->pathToModuleConfig = $path;
-	}
-
 	public function getModuleConfiguration()
 	{
 		if (!$this->configLoaded) {

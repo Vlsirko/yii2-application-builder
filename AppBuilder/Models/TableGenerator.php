@@ -3,12 +3,13 @@
 namespace AppBuilder\Models;
 
 use yii\gii\generators\model\Generator;
+use AppBuilder\Factories\ExceptionHandlers\ExceptionHandlerFactory;
 
 /**
  * Create table from configuration file
  * @author Sirenko Vlad
  */
-class TableGenerator extends Generator{
+class TableGenerator extends Generator {
 
 	protected $tablesCommandStorage = [];
 	protected $relationCommandStorage = [];
@@ -19,7 +20,7 @@ class TableGenerator extends Generator{
 	{
 		$this->connection = \Yii::$app->db;
 	}
-	
+
 	public function getName()
 	{
 		return "TableGenerator";
@@ -31,8 +32,8 @@ class TableGenerator extends Generator{
 		foreach ($this->configuration as $module) {
 			$options = isset($module['table']['options']) ? $module['table']['options'] : null;
 			$this->registerTable($module['table']['table_name'], $module['table']['schema'], $options);
-			
-			if(isset($module['table']['relations'])){
+
+			if (isset($module['table']['relations'])) {
 				$this->registerTableRelations($module['table']['table_name'], $module['table']['relations']);
 			}
 		}
@@ -67,17 +68,29 @@ class TableGenerator extends Generator{
 	protected function runTablesCommands()
 	{
 		foreach ($this->tablesCommandStorage as $moduleName => $command) {
-			Messager::getInstance()->showMessage('Generating "' . $moduleName . "'");
-			$command->execute();
+			try {
+				Messager::getInstance()->showMessage('Generating "' . $moduleName . "' table");
+				$command->execute();
+			} catch (\Exception $e) {
+				ExceptionHandlerFactory::getHandlerViaException($e)->handle();
+			}
 		}
 	}
-	
+
 	protected function runRelationsCommands()
 	{
 		foreach ($this->relationCommandStorage as $moduleName => $command) {
-			Messager::getInstance()->showMessage('Generating relation "' . $moduleName . "'");
-			$command->execute();
+			try {
+				Messager::getInstance()->showMessage('Generating relation "' . $moduleName . "'");
+				$command->execute();
+			} catch (\Exception $e) {
+				ExceptionHandlerFactory::getHandlerViaException($e)->handle();
+			}
 		}
+	}
+	
+	protected function handleSqlException(){
+		
 	}
 
 	protected function validateSchema($schema)
@@ -87,5 +100,7 @@ class TableGenerator extends Generator{
 		 */
 		return $schema;
 	}
+	
+	
 
 }

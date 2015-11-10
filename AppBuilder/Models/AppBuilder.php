@@ -4,6 +4,8 @@ namespace AppBuilder\Models;
 
 use AppBuilder\Factories\Generators\AbstractFactory as GeneratorFactory;
 use yii\base\Object;
+use yii\gii\CodeFile;
+use AppBuilder\Models\Messager;
 
 /**
  * Responsible for creating modules
@@ -41,13 +43,33 @@ class AppBuilder extends Object {
 	protected function generate($type, $modelParamsArray)
 	{
 		$generator = GeneratorFactory::getGeneratorsFactory($type)->getGenerator($modelParamsArray[$type]);
-		$this->saveFiles($generator->generate());
+		$this->processingGeneratedFiles($generator->generate());
 		$generator->trigger('AFTER_CREATE');
 	}
-	
-	protected function saveFiles($files){
-		foreach($files as $file){
+
+	protected function processingGeneratedFiles($files)
+	{
+		foreach ($files as $file) {
+			if ($file->diff() && !$this->confirmRewriteFile($file)) {
+				continue;
+			}
 			$file->save();
+			Messager::getInstance()->showMessage($file->path . ' succesfully generated', Messager::SUCCSESS);
+		}
+	}
+
+	protected function confirmRewriteFile(CodeFile $file)
+	{
+		try {
+			$question = "File '%s' exists and have some difference, "
+				. "are you shure that you want to rewrite it? Type "
+				. "'yes' to rewrite:";
+			
+			$confirmString = sprintf($question, $file->path);
+			Messager::getInstance()->confirm($confirmString, Messager::WARNING);
+			return true;
+		} catch (\Exception $e) {
+			return false;
 		}
 	}
 
