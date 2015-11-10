@@ -15,7 +15,7 @@ class TableGeneratorFactory {
 	public static function getGenerator($moduleConfigurationArray, $createCommandStrategyName)
 	{
 		$commandStrategy = new TableGeneratorStrategyFactory($createCommandStrategyName);
-		$generator = new TableGenerator($commandStrategy);
+		$generator = new TableGenerator($commandStrategy->getCommand());
 		$generator->parseConfiguration($moduleConfigurationArray);
 		return $generator;
 	}

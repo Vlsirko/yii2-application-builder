@@ -4,7 +4,7 @@ namespace AppBuilder\Models\TableGenerator;
 
 use AppBuilder\Factories\ExceptionHandlers\ExceptionHandlerFactory;
 use AppBuilder\Models\Messager;
-use AppBuilder\Factories\TableGeneratorStrategyFactory;
+use AppBuilder\Models\TableGenerator\Strategies\TableGeneratorStrategyInterface;
 
 /**
  * Create table from configuration file
@@ -18,8 +18,9 @@ class TableGenerator {
 	protected $connection;
 	protected $commandStrategy;
 
-	public function __construct(TableGeneratorStrategyFactory $strategy)
+	public function __construct(TableGeneratorStrategyInterface $strategy)
 	{
+		$this->connection = \Yii::$app->db;
 		$this->commandStrategy = $strategy;
 	}
 	
@@ -45,8 +46,8 @@ class TableGenerator {
 		
 		$tableName = $tableConfiguration['table_name'];
 		$relations = $tableConfiguration['relations'];
-		$command = $this->commandStrategy->getRegisterRelationsCommand($tableName, $relations);
-		$this->relationCommandStorage[$tableName] = $command;
+		$commands = $this->commandStrategy->getRegisterRelationsCommand($tableName, $relations);
+		$this->relationCommandStorage =  $commands;
 	}
 	
 	
