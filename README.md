@@ -57,7 +57,18 @@ Add to "modules" field installed module:
 
 > **For basic template**
 
-**TODO**
+Open *config/console.php* file and in field "bootstrap" add "app_builder":
+
+```
+	'bootstrap' => ['log', 'app_builder']
+```
+
+Add to "modules" field installed module:
+```  
+   'modules' => [
+		'app_builder' => 'AppBuilder\Module'
+    ],
+```	
 
 
 ----------
