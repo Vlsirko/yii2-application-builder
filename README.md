@@ -21,9 +21,9 @@ file as you need and generate code via one command in console
 -----------------------------
 
  1. Add to yours *composer.json* in "require-dev" field:
-```	   
-	 "Vlsirko/yii2-application-builder" : "dev-master"
-```
+  
+	 `"Vlsirko/yii2-application-builder" : "dev-master"`
+
  2. Add to yours *composer.json* in "repositories" field:
 ```
 	{
@@ -31,7 +31,7 @@ file as you need and generate code via one command in console
 		"type" : "git"
 	}
 ```
- 3. Run *./composer.phar update* in shell
+ 3. Run `*./composer.phar update*` in shell
  4. Change your configuration file:
 	 
 > **For advanced template**
@@ -85,5 +85,6 @@ If you need to redefine standart code generators, you must follow by next steps:
 
 1. Create *app_dependencies.json* file in console config directory;
 2. FIll this file like this [sample](https://github.com/Vlsirko/yii2-application-builder/blob/master/samples/app_dependencies.json);
+
 >**WARNING!**
 >Your own class must be an instance of  yii\gii\Generator
