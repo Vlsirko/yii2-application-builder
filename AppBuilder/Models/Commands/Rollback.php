@@ -1,21 +1,18 @@
 <?php
 
-namespace AppBuilder\Models\AppBuilder\Strategies;
+namespace AppBuilder\Models\Commands;
 
 use AppBuilder\Factories\Generators\AbstractFactory as GeneratorFactory;
 use AppBuilder\Factories\TableGeneratorStrategyFactory;
 use AppBuilder\Factories\TableGeneratorFactory;
 use AppBuilder\Models\ConfigLoader;
-use AppBuilder\Models\Messager;
-use yii\gii\CodeFile;
-use yii\base\ErrorException;
 
 /**
  * Description of Rollback
  *
  * @author Sirenko Vlad
  */
-class Rollback extends AbstractAppBuilderStrategy {
+class Rollback extends AbstractCommand {
 
 	public function processingTables()
 	{
@@ -41,7 +38,7 @@ class Rollback extends AbstractAppBuilderStrategy {
 		GeneratorFactory::getGeneratorsFactory($type)->getDestroyer($modelParamsArray[$type])->destroy();
 	}
 
-	public function process()
+	public function execute()
 	{
 		$this->processingModules()->processingTables();
 	}

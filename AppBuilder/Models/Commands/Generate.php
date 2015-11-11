@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBuilder\Models\AppBuilder\Strategies;
+namespace AppBuilder\Models\Commands;
 
 use AppBuilder\Factories\Generators\AbstractFactory as GeneratorFactory;
 use yii\gii\CodeFile;
@@ -15,10 +15,10 @@ use AppBuilder\Factories\TableGeneratorStrategyFactory;
  *
  * @author Sirenko Vlad
  */
-class Generate extends AbstractAppBuilderStrategy {
+class Generate extends AbstractCommand {
 	
 	
-	public function process(){
+	public function execute(){
 		$this->processingTables()->processingModules();
 	}
 	
@@ -63,7 +63,7 @@ class Generate extends AbstractAppBuilderStrategy {
 		try {
 			$question = "File '%s' exists and have some difference, "
 				. "are you shure that you want to rewrite it? Type "
-				. "'yes' to rewrite:";
+				. "'yes' to rewrite";
 
 			$confirmString = sprintf($question, $file->path);
 			Messager::getInstance()->confirm($confirmString, Messager::WARNING);

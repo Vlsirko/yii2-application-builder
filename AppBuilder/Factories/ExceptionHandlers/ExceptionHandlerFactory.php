@@ -22,8 +22,8 @@ class ExceptionHandlerFactory {
 
 	public static function getHandlerViaException(\Exception $e)
 	{
-		$info = $e->errorInfo;
-		$strategy = self::getHandlerStrategyViaExceptionCode($info[1]);
+		$info = property_exists($e, 'errorInfo') ? $e->errorInfo[1] : $e->getCode();
+		$strategy = self::getHandlerStrategyViaExceptionCode($info);
 		$strategy->setException($e);
 		return new ExceptionHandler($strategy);
 	}
@@ -41,6 +41,9 @@ class ExceptionHandlerFactory {
 				return new Strategies\SqlTableNotExists();
 			case self::SQL_INDEX_NOT_EXISTS:
 				return new Strategies\SqlIndexNotExists();
+			
+			default:
+				return new Strategies\DefaultStrategy();
 		}
 
 		throw new \Exception("Undefined exception code in ExceptionHandlerFactory {$code}");
