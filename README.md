@@ -11,8 +11,8 @@ file as you need and generate code via one command in console
 
 
 **Requirements:**
-	 1. Yii2 framework (basic or advanced template)
-	 2. Yii2 gii module
+	 * Yii2 framework (basic or advanced template)
+	 * Yii2 gii module
 
 
 ----------
@@ -24,7 +24,7 @@ file as you need and generate code via one command in console
 ```	   
 	     "Vlsirko/yii2-application-builder" : "dev-master"
 ```
- 2. 	Add to yours *composer.json* in "repositories" field:
+ 2. Add to yours *composer.json* in "repositories" field:
 ```
 			{
 				"url" : "https://github.com/Vlsirko/yii2-application-builder.git",
