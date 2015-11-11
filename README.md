@@ -22,14 +22,14 @@ file as you need and generate code via one command in console
 
  1. Add to yours *composer.json* in "require-dev" field:
 ```	   
-	     "Vlsirko/yii2-application-builder" : "dev-master"
+	 "Vlsirko/yii2-application-builder" : "dev-master"
 ```
  2. Add to yours *composer.json* in "repositories" field:
 ```
-			{
-				"url" : "https://github.com/Vlsirko/yii2-application-builder.git",
-				"type" : "git"
-			}
+	{
+		"url" : "https://github.com/Vlsirko/yii2-application-builder.git",
+		"type" : "git"
+	}
 ```
  3. Run *./composer.phar update* in shell
  4. Change your configuration file:
