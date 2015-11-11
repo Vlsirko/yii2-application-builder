@@ -21,15 +21,15 @@ file as you need and generate code via one command in console
 -----------------------------
 
  1. Add to yours *composer.json* in "require-dev" field:
-  
-	 `"Vlsirko/yii2-application-builder" : "dev-master"`
-
+```
+	"Vlsirko/yii2-application-builder" : "dev-master"
+```
  2. Add to yours *composer.json* in "repositories" field:
 ```
-	{
-		"url" : "https://github.com/Vlsirko/yii2-application-builder.git",
-		"type" : "git"
-	}
+{
+	"url" : "https://github.com/Vlsirko/yii2-application-builder.git",
+	"type" : "git"
+}
 ```
  3. Run `*./composer.phar update*` in shell
  4. Change your configuration file:
@@ -68,18 +68,16 @@ Add to "modules" field installed module:
 **Generating application:**
  1. Create *app_structure.json* file and put it into your app config directory
  2. Fill this file like in [sample](https://github.com/Vlsirko/yii2-application-builder/blob/master/samples/app_structure_sample.json)
- 3. Run yii2 console app:
+ 3. Run yii2 console app  ` $./yii app_builder generate `:
  
-   ` $./yii app_builder generate `
+  
 
 **Rollback changes:**
 
-Run next command in yii2 base directory:
+Run next command in yii2 base directory ` $ ./yii app_builder rollback `
 
-    ` $ ./yii app_builder rollback `
-
-
-**Set your own code generators:**
+    
+**Setting your own code generators:**
 
 If you need to redefine standart code generators, you must follow by next steps:
 
