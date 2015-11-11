@@ -11,9 +11,9 @@ file as you need and generate code via one command in console
 
 
 **Requirements:**
-	 * Yii2 framework (basic or advanced template)
-	 * Yii2 gii module
 
+* Yii2 framework (basic or advanced template)
+* Yii2 gii module
 
 ----------
 
@@ -70,16 +70,19 @@ Add to "modules" field installed module:
  2. Fill this file like in [sample](https://github.com/Vlsirko/yii2-application-builder/blob/master/samples/app_structure_sample.json)
  3. Run yii2 console app:
  
-    $./yii app_builder generate
+   ``` $./yii app_builder generate```
 
 **Rollback changes:**
+
 Run next command in yii2 base directory:
 
-    $ ./yii app_builder rollback
+    ```$ ./yii app_builder rollback```
 
 
 **Set your own code generators:**
+
 If you need to redefine standart code generators, you must follow by next steps:
+
 1. Create *app_dependencies.json* file in console config directory;
 2. FIll this file like this [sample](https://github.com/Vlsirko/yii2-application-builder/blob/master/samples/app_dependencies.json);
 >**WARNING!**
