@@ -36,7 +36,7 @@ file as you need and generate code via one command in console
 	 
 > **For advanced template**
 
-Open *console/config/main.php* file and in field "bootstrap" add "app_builder":
+Open *console/config/main-local.php* file and in field "bootstrap" add "app_builder":
 
 ```
 	'bootstrap' => ['log', 'app_builder']
